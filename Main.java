@@ -100,6 +100,46 @@ public class Main {
         return new Object[]{pageFaults, swap};
     }
 
+    static Object[] simularMIN(int[] requisicoes, int numFrames) {
+    Set<Integer> memoria = new HashSet<>();
+    Set<Integer> swap = new HashSet<>();
+    
+    int pageFaults = 0;
+
+    for (int i = 0; i < requisicoes.length; i++) {
+        int req = requisicoes[i];
+        if (!memoria.contains(req)) {
+            pageFaults++;
+            if (memoria.size() == numFrames) {
+                int substituir = -1;
+                int maisDistante = -1;
+
+                for (int p : memoria) {
+                    int j;
+                    for (j = i + 1; j < requisicoes.length; j++) {
+                        if (requisicoes[j] == p) break;
+                    }
+                    if (j == requisicoes.length) {
+                        substituir = p;
+                        break;
+                    } else if (j > maisDistante) {
+                        maisDistante = j;
+                        substituir = p;
+                    }
+                }
+
+                memoria.remove(substituir);
+                swap.add(substituir);
+            }
+
+            memoria.add(req);
+            swap.remove(req);
+        }
+    }
+
+    return new Object[]{pageFaults, swap};
+}
+
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
