@@ -134,11 +134,88 @@ public class Main {
 
             memoria.add(req);
             swap.remove(req);
+            }
         }
+
+        return new Object[]{pageFaults, swap};
+    }
+    
+        static void imprimirFifo(int[] requisicoes, int numFrames){
+            //FIFO
+            long ini = System.nanoTime();
+            Object[] fifo = simularFIFO(requisicoes, numFrames);
+            long fim = System.nanoTime();
+
+            int pageFaults = (int) fifo[0];
+            Set<Integer> swap = (Set<Integer>) fifo[1];
+             
+        
+            System.out.println("FIFO");
+            System.out.println((fim - ini) / 1_000_000_000); 
+            System.out.println(pageFaults);
+
+            for(int p : swap){
+                System.out.print(p + " ");
+            }
+            System.out.println();
     }
 
-    return new Object[]{pageFaults, swap};
-}
+    static void imprimirRand(int[] requisicoes, int numFrames){
+            // RAND
+            long ini = System.nanoTime();
+            Object[] rand = simularRAND(requisicoes, numFrames);
+
+            int pageFaults = (int) rand[0];
+            Set<Integer> swap = (Set<Integer>) rand[1];
+        
+            long fim = System.nanoTime();
+            System.out.println("RAND");
+            System.out.println((fim - ini) / 1_000_000_000);
+            System.out.println(pageFaults);
+        
+            for(int p : swap){
+                System.out.print(p + " ");
+            }
+            System.out.println();
+    }
+
+    static void imprimirLru(int[] requisicoes, int numFrames){
+            // LRU
+            long ini = System.nanoTime();
+            Object[] lru = simularLRU(requisicoes, numFrames);
+            long fim = System.nanoTime();
+
+            int pageFaults = (int) lru[0];
+            Set<Integer> swap = (Set<Integer>) lru[1];
+        
+            System.out.println("LRU");
+            System.out.println((fim - ini) / 1_000_000_000);
+            System.out.println(pageFaults);
+        
+            for(int p : swap){
+                System.out.print(p + " ");
+            }
+            System.out.println();
+    }
+
+    static void imprimirMin(int[] requisicoes, int numFrames){
+            // MIN
+            long ini = System.nanoTime();
+            Object[] min = simularMIN(requisicoes, numFrames);
+            long fim = System.nanoTime();
+
+            int pageFaults = (int) min[0];
+            Set<Integer> swap = (Set<Integer>) min[1];
+        
+            System.out.println("MIN");
+            System.out.println((fim - ini) / 1_000_000_000);
+            System.out.println(pageFaults);
+        
+            for(int p : swap){
+                System.out.print(p + " ");
+            }
+            System.out.println();
+    }
 
 
     public static void main(String[] args) {
