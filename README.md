@@ -1,228 +1,228 @@
-📘 Simulador de Memória Virtual com Paginação por Demanda
+# 📘 Simulador de Memória Virtual com Paginação por Demanda
 
-Este projeto implementa um simulador de memória virtual utilizando paginação por demanda e quatro políticas clássicas de substituição.
-O foco deste README é documentar o código, método por método, explicando para que serve cada parte.
+Este projeto implementa um simulador de **memória virtual** utilizando paginação por demanda e quatro políticas clássicas de substituição.  
+O foco deste README é **documentar o código**, método por método, explicando para que serve cada parte.
 
-📑 Sumário
+---
 
-📘 Descrição Geral
+# 📑 Sumário
+- [📘 Descrição Geral](#-descrição-geral)
+- [🧮 Cálculos Iniciais](#-cálculos-iniciais)
+  - [📏 calcularTamanhoPagina](#-calculartamanhopaginaint-memoriavirtual-int-numpaginas)
+  - [🧱 calcularFrames](#-calcularframesint-memoriafisica-int-tamanhopagina)
+  - [🔄 calcularSwap](#-calcularswapint-memoriavirtual-int-memoriafisica)
+- [🔁 Algoritmos de Substituição](#-algoritmos-de-substituição)
+  - [🟦 FIFO](#-fifo--simularfifoint-requisicoes-int-numframes)
+  - [🟩 LRU](#-lru--simularlruint-requisicoes-int-numframes)
+  - [🟨 RAND](#-rand--simularrandint-requisicoes-int-numframes)
+  - [🟪 MIN](#-min--simularminint-requisicoes-int-numframes)
+- [🖨️ Métodos de Impressão](#️-métodos-de-impressão)
+- [▶️ Método main](#️-método-main)
+- [📌 Observações Técnicas](#-observações-técnicas)
+- [👤 Autor](#-autor)
 
-🧮 Cálculos Iniciais
+---
 
-calcularTamanhoPagina
+# 📘 Descrição Geral
 
-calcularFrames
+O programa simula o funcionamento da **paginação por demanda** em memória virtual, analisando o comportamento dos algoritmos:
 
-calcularSwap
-
-🔁 Algoritmos de Substituição
-
-FIFO — simularFIFO
-
-LRU — simularLRU
-
-RAND — simularRAND
-
-MIN — simularMIN
-
-🖨️ Métodos de Impressão
-
-▶️ Método main
-
-📌 Observações Técnicas
-
-👤 Autor
-
-📘 Descrição Geral
-
-O programa simula o funcionamento da paginação por demanda em memória virtual, analisando o comportamento das políticas de substituição FIFO, LRU, RAND e MIN.
+- FIFO  
+- LRU  
+- RAND  
+- MIN (Ótimo)
 
 O usuário fornece:
 
-Memória física
+- Memória física  
+- Memória virtual  
+- Arquitetura  
+- Número de páginas  
+- Sequências de acessos à memória  
 
-Memória virtual
+O simulador então processa e executa todas as políticas para cada sequência fornecida.
 
-Arquitetura 
+---
 
-Número de páginas
+# 🧮 Cálculos Iniciais
 
-Sequências de acessos à memória
+## 📏 `calcularTamanhoPagina(int memoriaVirtual, int numPaginas)`
 
-A partir disso, o simulador calcula estatísticas e executa todas as políticas em cada sequência.
+Calcula e retorna o tamanho de uma página.
 
-🧮 Cálculos Iniciais
-📏 calcularTamanhoPagina(int memoriaVirtual, int numPaginas)
+**Lógica:**  
+Divide a memória virtual pelo número de páginas para determinar o tamanho de cada página.
 
-Calcula e retorna o tamanho de uma página de memória.
+---
 
-Lógica:
-Divide a memória virtual pelo número total de páginas.
-Isso determina quantos bytes (ou unidades) cada página possui.
-
-🧱 calcularFrames(int memoriaFisica, int tamanhoPagina)
+## 🧱 `calcularFrames(int memoriaFisica, int tamanhoPagina)`
 
 Calcula quantos frames cabem na memória física.
 
-Lógica:
-Divide a memória física pelo tamanho da página.
-Isso indica quantas páginas podem estar carregadas simultaneamente.
+**Lógica:**  
+Divide a memória física pelo tamanho da página.  
+Determina quantas páginas podem ficar carregadas simultaneamente.
 
-🔄 calcularSwap(int memoriaVirtual, int memoriaFisica)
+---
 
-Retorna a quantidade de memória que ficará no swap.
+## 🔄 `calcularSwap(int memoriaVirtual, int memoriaFisica)`
 
-Lógica:
-É a diferença entre a memória virtual total e a física disponível.
+Retorna o tamanho da área de swap necessária.
 
-🔁 Algoritmos de Substituição
+**Lógica:**  
+swap = memória virtual – memória física
 
-Cada método simula uma política e retorna:
+---
 
-Object[] { pageFaults, conjuntoDePaginasRemovidas }
+# 🔁 Algoritmos de Substituição
 
-🟦 FIFO — simularFIFO(int[] requisicoes, int numFrames)
+Cada método retorna:
 
-Responsabilidade:
-Simular a substituição First In, First Out.
 
-Como funciona internamente:
+---
 
-Mantém uma fila (Queue) representando a ordem de chegada das páginas.
+## 🟦 FIFO — `simularFIFO(int[] requisicoes, int numFrames)`
 
-Se ocorre page fault e a memória está cheia, remove a página mais antiga.
+### ✔️ Responsabilidade  
+Simular o algoritmo **First In, First Out**.
 
-Armazena páginas removidas no conjunto swap.
+### ✔️ Funcionamento  
+- Usa uma **fila (Queue)** para registrar a ordem de chegada das páginas.  
+- Ocorre page fault?  
+  - Se a memória está cheia → remove a **página mais antiga**.  
+- Registra páginas removidas em `swap`.
 
-Estruturas utilizadas:
-✔️ HashSet (memória)
-✔️ LinkedList (fila FIFO)
-✔️ HashSet (swap)
+### ✔️ Estruturas usadas  
+- `HashSet` (memória)  
+- `LinkedList` (fila FIFO)  
+- `HashSet` (swap)
 
-🟩 LRU — simularLRU(int[] requisicoes, int numFrames)
+---
 
-Responsabilidade:
-Simular o algoritmo Least Recently Used.
+## 🟩 LRU — `simularLRU(int[] requisicoes, int numFrames)`
 
-Como funciona:
+### ✔️ Responsabilidade  
+Simular o algoritmo **Least Recently Used**.
 
-Armazena a última posição de uso de cada página em um HashMap.
+### ✔️ Funcionamento  
+- Um `HashMap` armazena a última vez que cada página foi acessada.  
+- Quando ocorre substituição, remove a página **menos recentemente usada**.  
+- Atualiza swap conforme necessário.
 
-Para substituir, procura a página com último uso mais antigo.
+### ✔️ Estruturas usadas  
+- `HashSet`  
+- `HashMap<Integer, Integer>`  
+- `HashSet` (swap)
 
-Remove essa página e atualiza swap.
+---
 
-Estruturas utilizadas:
-✔️ HashSet (memória)
-✔️ HashMap<Integer, Integer> (último uso)
-✔️ HashSet (swap)
+## 🟨 RAND — `simularRAND(int[] requisicoes, int numFrames)`
 
-🟨 RAND — simularRAND(int[] requisicoes, int numFrames)
+### ✔️ Responsabilidade  
+Simular substituição **aleatória**.
 
-Responsabilidade:
-Aplicar substituição aleatória.
+### ✔️ Funcionamento  
+- Quando ocorre page fault com memória cheia:  
+  - Escolhe uma página aleatória utilizando `Random`.  
+  - Remove e registra no swap.
 
-Como funciona:
+### ✔️ Estruturas usadas  
+- `HashSet`  
+- `ArrayList`  
+- `Random`  
+- `HashSet` (swap)
 
-Ao ocorrer page fault com a memória cheia, escolhe uma página aleatória e remove.
+---
 
-Usa Random para selecionar um índice da lista.
+## 🟪 MIN — `simularMIN(int[] requisicoes, int numFrames)`
 
-Estruturas utilizadas:
-✔️ HashSet
-✔️ ArrayList
-✔️ Random
-✔️ HashSet (swap)
+### ✔️ Responsabilidade  
+Simular o algoritmo **Ótimo (Belady)**.
 
-🟪 MIN — simularMIN(int[] requisicoes, int numFrames)
+### ✔️ Funcionamento  
+- Ao ocorrer page fault:  
+  - Analisa todas as páginas presentes.  
+  - Detecta qual página será usada **mais distante no futuro**.  
+  - Se alguma não será usada novamente → ela é removida imediatamente.
 
-Responsabilidade:
-Simular o algoritmo Ótimo.
+### ✔️ Estruturas usadas  
+- `HashSet` (memória)  
+- `HashSet` (swap)
 
-Como funciona:
+---
 
-Para cada page fault com memória cheia:
+# 🖨️ Métodos de Impressão
 
-Analisa todas as páginas presentes.
+Os métodos:
 
-Procura aquela que será usada mais distante no futuro.
+- `imprimirFifo`
+- `imprimirRand`
+- `imprimirLru`
+- `imprimirMin`
 
-Se alguma não for usada novamente, ela é escolhida imediatamente.
+Cada um:
 
-Remove apenas a ideal.
+1. Mede o tempo de execução com `System.nanoTime()`.  
+2. Executa o algoritmo correspondente.  
+3. Imprime:  
+   - Nome do algoritmo  
+   - Tempo de execução em segundos  
+   - Quantidade de page faults  
+   - Páginas enviadas ao swap  
 
-Estruturas utilizadas:
-✔️ HashSet (memória)
-✔️ HashSet (swap)
+---
 
-🖨️ Métodos de Impressão
+# ▶️ Método main
 
-Cada método (imprimirFifo, imprimirRand, imprimirLru, imprimirMin) faz:
+O método principal é responsável por toda a execução do simulador.
 
-Mede o tempo com nanoTime()
+---
 
-Executa a simulação da política correspondente
+## 📥 Entrada
 
-Imprime:
+- Memória física  
+- Memória virtual  
+- Arquitetura (não utilizada)  
+- Número de páginas  
+- Número de sequências  
+- Cada sequência de requisições de memória  
 
-Nome da política
+---
 
-Tempo de execução
+## ⚙️ Processamento
 
-Número de page faults
+- Calcula:  
+  - Tamanho da página  
+  - Número de frames  
+  - Tamanho do swap  
+- Lê todas as sequências  
+- Para cada sequência:  
+  - Imprime os valores  
+  - Executa FIFO, RAND, LRU e MIN  
 
-Páginas enviadas ao swap
+---
 
-Os métodos são praticamente idênticos, mudando apenas qual algoritmo chamam.
+## 📤 Saída
 
-▶️ Método main
+Para cada sequência, o programa imprime:
 
-O método principal é responsável por:
+- A lista de acessos  
+- Resultados de cada política:  
+  - Tempo  
+  - Page Faults  
+  - Páginas removidas  
 
-📥 Entrada:
+---
 
-Lê a memória física e virtual
+# 📌 Observações Técnicas
 
-Lê arquitetura (não usada)
+- O conjunto `swap` é apenas lógico — não simula armazenamento real.  
+- O algoritmo **MIN** é o mais custoso, pois analisa o futuro da sequência.  
+- A arquitetura lida na entrada não interfere na execução.  
+- Os tempos são impressos em **segundos**.
 
-Número de páginas
+---
 
-Número de sequências
+# 👤 Autor
+**Vitor Hugo Dutra Marinho**
 
-Cada sequência de requisições
-
-⚙️ Processamento:
-
-Calcula:
-
-Tamanho da página
-
-Número de frames físicos
-
-Tamanho do swap
-
-Armazena todas as sequências em um vetor de arrays
-
-📤 Saída:
-
-Para cada sequência:
-
-Imprime a sequência
-
-Executa FIFO, RAND, LRU e MIN
-
-Imprime os resultados
-
-📌 Observações Técnicas
-
-O swap é representado apenas como conjunto lógico (não há armazenamento físico).
-
-O algoritmo MIN pode ser custoso, pois olha para o futuro a cada page fault.
-
-A arquitetura lida na entrada não interfere nas simulações.
-
-Os tempos de execução impressos estão em segundos.
-
-👤 Autor
-
-Vitor Hugo Dutra Marinho
