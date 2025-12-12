@@ -1,5 +1,7 @@
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Scanner;
 import java.util.Set;
@@ -36,6 +38,36 @@ public class Main {
                 fila.add(req);
                 swap.remove(req);
             }
+        }
+        return new Object[]{pageFaults, swap};
+    }
+
+    static  Object[] simularLRU(int[] requisicoes, int numFrames) {
+        Set<Integer> memoria = new HashSet<>();
+        Map<Integer, Integer> ultimoUso = new HashMap<>();
+        Set<Integer> swap = new HashSet<>();
+        int pageFaults = 0;
+        
+
+        for (int i = 0; i < requisicoes.length; i++) {
+            int req = requisicoes[i];
+            if (!memoria.contains(req)) {
+                pageFaults++;
+                if (memoria.size() == numFrames) {
+                    int lru = -1, min = Integer.MAX_VALUE;
+                    for (int p : memoria) {
+                        if (ultimoUso.get(p) < min) {
+                            min = ultimoUso.get(p);
+                            lru = p;
+                        }
+                    }
+                    memoria.remove(lru);
+                    swap.add(lru);
+                }
+                memoria.add(req);
+                swap.remove(req);
+            }
+            ultimoUso.put(req, i);
         }
         return new Object[]{pageFaults, swap};
     }
