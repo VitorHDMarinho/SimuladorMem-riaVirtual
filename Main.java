@@ -256,5 +256,24 @@ public class Main {
             System.out.println();
             System.out.println(numSequencias);
             System.out.println();
+
+
+            for (int i = 0; i < numSequencias; i++) {
+                //Acessa cada sequencaia armazenada
+                int[] requisicoes = todasAsSequencias[i];
+                
+                for (int j = 0; j < requisicoes.length; j++) {
+                    System.out.print(requisicoes[j] + " ");
+                }
+                System.out.println();
+                imprimirFifo(requisicoes,numFrames);
+                imprimirRand(requisicoes, numFrames);
+                imprimirLru(requisicoes, numFrames);
+                imprimirMin(requisicoes, numFrames);
+                System.out.println();
+            }
+        
+
+        sc.close();
     }
 }
