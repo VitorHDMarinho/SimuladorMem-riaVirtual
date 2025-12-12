@@ -1,8 +1,11 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -68,6 +71,31 @@ public class Main {
                 swap.remove(req);
             }
             ultimoUso.put(req, i);
+        }
+        return new Object[]{pageFaults, swap};
+    }
+
+    static Object[] simularRAND(int[] requisicoes, int numFrames) {
+        Set<Integer> memoria = new HashSet<>();
+        List<Integer> lista = new ArrayList<>();
+        Set<Integer> swap = new HashSet<>();
+        Random rand = new Random();
+        int pageFaults = 0;
+
+        for (int req : requisicoes) {
+            if (!memoria.contains(req)) {
+                pageFaults++;
+                if (memoria.size() == numFrames) {
+                    int idx = rand.nextInt(lista.size());
+                    int removido = lista.get(idx);
+                    memoria.remove(removido);
+                    lista.remove(idx);
+                    swap.add(removido);
+                }
+                memoria.add(req);
+                lista.add(req);
+                swap.remove(req);
+            }
         }
         return new Object[]{pageFaults, swap};
     }
