@@ -1,4 +1,8 @@
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
+import java.util.Set;
 
 public class Main {
 
@@ -12,6 +16,28 @@ public class Main {
 
     static int calcularSwap(int memoriaVirtual, int memoriaFisica) {
         return memoriaVirtual - memoriaFisica;
+    }
+
+    static Object[] simularFIFO(int[] requisicoes, int numFrames) {
+        Set<Integer> memoria = new HashSet<>();
+        Queue<Integer> fila = new LinkedList<>();
+        Set<Integer> swap = new HashSet<>();
+        int pageFaults = 0;
+
+        for (int req : requisicoes) {   
+            if (!memoria.contains(req)) {
+                pageFaults++;
+                if (memoria.size() == numFrames) {
+                    int removido = fila.poll();
+                    memoria.remove(removido);
+                    swap.add(removido);
+                }
+                memoria.add(req);
+                fila.add(req);
+                swap.remove(req);
+            }
+        }
+        return new Object[]{pageFaults, swap};
     }
 
 
